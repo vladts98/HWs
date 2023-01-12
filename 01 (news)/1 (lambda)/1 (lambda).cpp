@@ -12,9 +12,12 @@ int main()
 
 	std::cout << "\n";
 
-	std::for_each(v.begin(), v.end(), [](auto& v)
+	std::for_each(v.begin(), v.end(), [index = 0](auto& v_) mutable
 		{
-			v *= 3;
+			if ((index % 2) == 0) {
+				v_ *= 3;
+			}
+			++index;
 		});
 
 	for (auto v_ : v) {
