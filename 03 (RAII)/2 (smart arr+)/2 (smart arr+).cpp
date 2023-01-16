@@ -2,11 +2,9 @@
 
 class smart_array {
 public:
-	smart_array(int size_) : size(std::move(size_)) {
-		std::cout << this << "\tconstr" << "\n";
-		if (size > 0) {
-			arr = new int[size];
-			std::cout << "arr\t" << arr << "\n\n";
+	smart_array(int full_size_) : full_size(std::move(full_size_)) {
+		if (full_size > 0) {
+			arr = new int[full_size];
 		}
 		else {
 			throw std::logic_error("size <= 1");
@@ -14,25 +12,22 @@ public:
 	}
 
 	~smart_array() {
-		std::cout << this << "\tdistr" << "\n";
-		std::cout << "arr\t" << arr << "\n\n";
-		if (size > 0) {
+		if (full_size > 0) {
 			delete[] arr;
 		}
 	}
 
 	void add_element(int n) {
-		if (N < size) {
-			arr[N] = n;
-			N++;
+		if (real_size < full_size) {
+			arr[real_size] = n;
+			real_size++;
 		}
 		else {
 			throw std::range_error("index error");
 		}
 	}
 	int get_element(int n) {
-		n--;
-		if ((n < size) && (n < N)) {
+		if ((0 <= n) && (n <= real_size)) {
 			return arr[n];
 		}
 		else {
@@ -41,21 +36,16 @@ public:
 	}
 
 	int get_size() {
-		return this->size;
+		return this->real_size;
 	}
 
-	smart_array& operator = (smart_array &a1) {
-		std::cout << this << "\t =\n";
-		std::cout << "arr\t" << this->arr << "  " << *this->arr << "\n";
-		
+	smart_array& operator = (smart_array& a1) {
 		delete[] this->arr;
-		std::cout << "arr-\t" << this->arr << "  " << *this->arr << "\n";
+		this->full_size = a1.full_size;
+		this->arr = new int[this->full_size];
+		this->real_size = a1.real_size;
 
-		this->size = a1.size;
-		this->N = a1.N;
-		this->arr = new int[this->size];
-		std::cout << "arr\t" << this->arr << "\n\n";
-		for (int i = 0; i < N; i++) {
+		for (int i = 0; i < real_size; i++) {
 			this->arr[i] = a1.arr[i];
 		}
 		return *this;
@@ -63,8 +53,8 @@ public:
 
 protected:
 	//public:
-	int size;
-	int N = 0;
+	int full_size;
+	int real_size = 0;
 	int* arr = nullptr;
 };
 
@@ -82,10 +72,9 @@ int main()
 		new_array.add_element(34);
 
 		arr = new_array;
-
-		//std::cout << arr.arr << "    " << new_array.arr;
 	}
 	catch (const std::exception& ex) {
 		std::cout << ex.what() << std::endl;
 	}
+	return 1;
 }
