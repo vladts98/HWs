@@ -27,7 +27,7 @@ public:
 		}
 	}
 	int get_element(int n) {
-		if ((0 <= n) && (n <= real_size)) {
+		if ((0 <= n) && (n < real_size)) {
 			return arr[n];
 		}
 		else {
@@ -52,7 +52,6 @@ public:
 	}
 
 protected:
-	//public:
 	int full_size;
 	int real_size = 0;
 	int* arr = nullptr;
