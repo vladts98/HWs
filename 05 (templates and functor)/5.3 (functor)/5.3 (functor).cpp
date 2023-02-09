@@ -2,16 +2,13 @@
 #include <vector>
 #include <string>
 
-
+template <class T>
 class Numb {
 public:
-	Numb(std::vector<int> str) : aaa(str) {
-	}
-
-	void operator() () {
+	Numb(const T& str) {
 		sum = 0;
 		count = 0;
-		for (auto a : aaa)
+		for (auto a : str)
 		{
 			if (a % 3 == 0) {
 				count++;
@@ -29,18 +26,20 @@ public:
 	}
 
 private:
-	std::vector<int> aaa;
-	int count = 0;
-	int sum = 0;
+	int count;
+	int sum;
 };
+
+template<typename T>
+Numb<T> makeNumb(T t) {
+	return Numb<T>(t);
+}
 
 
 int main()
 {
 	std::vector<int> vec{ 4, 1, 3, 6, 25, 54 };
 
-	Numb aaa(vec);
-	aaa();
-	std::cout << "get_sum() = " << aaa.get_sum() << "\n"
-		<< "get_count() = " << aaa.get_count();
+	std::cout << "get_sum() = " << makeNumb(vec).get_sum() << "\n"
+		<< "get_count() = " << makeNumb(vec).get_count();
 }
