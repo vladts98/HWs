@@ -1,19 +1,20 @@
 ﻿#include <iostream>
 #include <vector>
 #include <string>
+#include <algorithm>
 
-template <class T>
 class Numb {
 public:
-	Numb(const T& str) {
+	Numb() {
 		sum = 0;
 		count = 0;
-		for (auto a : str)
-		{
-			if (a % 3 == 0) {
-				count++;
-				sum += a;
-			}
+	}
+
+	template<typename T>
+	void operator () (T a) {
+		if (a % 3 == 0) {
+			count++;
+			sum += a;
 		}
 	}
 
@@ -30,16 +31,13 @@ private:
 	int sum;
 };
 
-template<typename T>
-Numb<T> makeNumb(T t) {
-	return Numb<T>(t);
-}
-
-
 int main()
 {
-	std::vector<int> vec{ 4, 1, 3, 6, 25, 54 };
+	Numb s;
+	std::vector<int> arr{ 4, 1, 3, 6, 25, 54 };
 
-	std::cout << "get_sum() = " << makeNumb(vec).get_sum() << "\n"
-		<< "get_count() = " << makeNumb(vec).get_count();
+	//std::for_each(arr.begin(), arr.end(), s); // а почему так не раотает? он плюсует но не сохраняет
+	s = std::for_each(arr.begin(), arr.end(), s);
+	std::cout << "get_sum() = " << s.get_sum() << "\n"
+		<< "get_count() = " << s.get_count();
 }
