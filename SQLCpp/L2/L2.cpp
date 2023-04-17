@@ -3,6 +3,9 @@
 #include <Wt/Dbo/Dbo.h>
 #include <Wt/Dbo/backend/Postgres.h>
 
+#include <Wt/WDateTime.h>
+#include <Wt/Dbo/WtSqlTraits.h>
+
 class publisher;
 class book;
 class shop;
@@ -73,7 +76,7 @@ public:
 class sale {
 public:
 	int price = 0;
-	int date_sale = 0;  //что за формат для даты
+	Wt::WDateTime date_sale;  //что за формат для даты
 
 	Wt::Dbo::ptr<stock> id_stock;
 
@@ -111,127 +114,127 @@ int main()
 		session.mapClass<shop>("shop");
 		session.mapClass<stock>("stock");
 		session.mapClass<sale>("sale");
-		//session.createTables();
+		session.createTables();
 
 		Wt::Dbo::Transaction transaction(session);
 
-		//std::unique_ptr<publisher> publisher_{ new publisher };
-		//std::unique_ptr<publisher> publisher_1{ new publisher };
-		//std::unique_ptr<publisher> publisher_2{ new publisher };
-		//publisher_->name = "ppp";
-		//publisher_1->name = "Grisha";
-		//publisher_2->name = "Lev";
-		//Wt::Dbo::ptr<publisher> p_ = session.add(std::move(publisher_));
-		//Wt::Dbo::ptr<publisher> p_1 = session.add(std::move(publisher_1));
-		//Wt::Dbo::ptr<publisher> p_2 = session.add(std::move(publisher_2));
+		std::unique_ptr<publisher> publisher_{ new publisher };
+		std::unique_ptr<publisher> publisher_1{ new publisher };
+		std::unique_ptr<publisher> publisher_2{ new publisher };
+		publisher_->name = "ppp";
+		publisher_1->name = "Grisha";
+		publisher_2->name = "Lev";
+		Wt::Dbo::ptr<publisher> p_ = session.add(std::move(publisher_));
+		Wt::Dbo::ptr<publisher> p_1 = session.add(std::move(publisher_1));
+		Wt::Dbo::ptr<publisher> p_2 = session.add(std::move(publisher_2));
 
-		//std::unique_ptr<shop> shop_{ new shop };
-		//std::unique_ptr<shop> shop_1{ new shop };
-		//std::unique_ptr<shop> shop_2{ new shop };
-		//shop_->name = "knigi";
-		//shop_1->name = "bookShop";
-		//shop_2->name = "0";
-		//Wt::Dbo::ptr<shop> s_ = session.add(std::move(shop_));
-		//Wt::Dbo::ptr<shop> s_1 = session.add(std::move(shop_1));
-		//Wt::Dbo::ptr<shop> s_2 = session.add(std::move(shop_2));
+		std::unique_ptr<shop> shop_{ new shop };
+		std::unique_ptr<shop> shop_1{ new shop };
+		std::unique_ptr<shop> shop_2{ new shop };
+		shop_->name = "knigi";
+		shop_1->name = "bookShop";
+		shop_2->name = "0";
+		Wt::Dbo::ptr<shop> s_ = session.add(std::move(shop_));
+		Wt::Dbo::ptr<shop> s_1 = session.add(std::move(shop_1));
+		Wt::Dbo::ptr<shop> s_2 = session.add(std::move(shop_2));
 
-		//std::unique_ptr<book> book_{ new book };
-		//std::unique_ptr<book> book_1{ new book };
-		//std::unique_ptr<book> book_2{ new book };
-		//std::unique_ptr<book> book_3{ new book };
-		//std::unique_ptr<book> book_4{ new book };
-		//book_->title = "King";
-		//book_1->title = "sldkf";
-		//book_2->title = "qwerty";
-		//book_3->title = "poiuy";
-		//book_4->title = "zxcvb";
-		//Wt::Dbo::ptr<book> b_ = session.add(std::move(book_));
-		//Wt::Dbo::ptr<book> b_1 = session.add(std::move(book_1));
-		//Wt::Dbo::ptr<book> b_2 = session.add(std::move(book_2));
-		//Wt::Dbo::ptr<book> b_3 = session.add(std::move(book_3));
-		//Wt::Dbo::ptr<book> b_4 = session.add(std::move(book_4));
+		std::unique_ptr<book> book_{ new book };
+		std::unique_ptr<book> book_1{ new book };
+		std::unique_ptr<book> book_2{ new book };
+		std::unique_ptr<book> book_3{ new book };
+		std::unique_ptr<book> book_4{ new book };
+		book_->title = "King";
+		book_1->title = "sldkf";
+		book_2->title = "qwerty";
+		book_3->title = "poiuy";
+		book_4->title = "zxcvb";
+		Wt::Dbo::ptr<book> b_ = session.add(std::move(book_));
+		Wt::Dbo::ptr<book> b_1 = session.add(std::move(book_1));
+		Wt::Dbo::ptr<book> b_2 = session.add(std::move(book_2));
+		Wt::Dbo::ptr<book> b_3 = session.add(std::move(book_3));
+		Wt::Dbo::ptr<book> b_4 = session.add(std::move(book_4));
 
-		//p_.modify()->book.insert(b_);
-		//p_.modify()->book.insert(b_1);
-		//p_.modify()->book.insert(b_2);
-		//p_1.modify()->book.insert(b_3);
-		//p_2.modify()->book.insert(b_4);
+		p_.modify()->book.insert(b_);
+		p_.modify()->book.insert(b_1);
+		p_.modify()->book.insert(b_2);
+		p_1.modify()->book.insert(b_3);
+		p_2.modify()->book.insert(b_4);
 
-		//std::unique_ptr<stock> stock_{ new stock };
-		//std::unique_ptr<stock> stock_1{ new stock };
-		//std::unique_ptr<stock> stock_2{ new stock };
-		//std::unique_ptr<stock> stock_3{ new stock };
-		//std::unique_ptr<stock> stock_4{ new stock };
-		//std::unique_ptr<stock> stock_5{ new stock };
-		//std::unique_ptr<stock> stock_6{ new stock };
-		//std::unique_ptr<stock> stock_7{ new stock };
-		//stock_->count = 2;
-		//stock_1->count = 1;
-		//stock_2->count = 4;
-		//stock_3->count = 1;
-		//stock_4->count = 2;
-		//stock_5->count = 3;
-		//stock_6->count = 1;
-		//stock_7->count = 10;
-		//Wt::Dbo::ptr<stock> st_ = session.add(std::move(stock_));
-		//Wt::Dbo::ptr<stock> st_1 = session.add(std::move(stock_1));
-		//Wt::Dbo::ptr<stock> st_2 = session.add(std::move(stock_2));
-		//Wt::Dbo::ptr<stock> st_3 = session.add(std::move(stock_3));
-		//Wt::Dbo::ptr<stock> st_4 = session.add(std::move(stock_4));
-		//Wt::Dbo::ptr<stock> st_5 = session.add(std::move(stock_5));
-		//Wt::Dbo::ptr<stock> st_6 = session.add(std::move(stock_6));
-		//Wt::Dbo::ptr<stock> st_7 = session.add(std::move(stock_7));
+		std::unique_ptr<stock> stock_{ new stock };
+		std::unique_ptr<stock> stock_1{ new stock };
+		std::unique_ptr<stock> stock_2{ new stock };
+		std::unique_ptr<stock> stock_3{ new stock };
+		std::unique_ptr<stock> stock_4{ new stock };
+		std::unique_ptr<stock> stock_5{ new stock };
+		std::unique_ptr<stock> stock_6{ new stock };
+		std::unique_ptr<stock> stock_7{ new stock };
+		stock_->count = 2;
+		stock_1->count = 1;
+		stock_2->count = 4;
+		stock_3->count = 1;
+		stock_4->count = 2;
+		stock_5->count = 3;
+		stock_6->count = 1;
+		stock_7->count = 10;
+		Wt::Dbo::ptr<stock> st_ = session.add(std::move(stock_));
+		Wt::Dbo::ptr<stock> st_1 = session.add(std::move(stock_1));
+		Wt::Dbo::ptr<stock> st_2 = session.add(std::move(stock_2));
+		Wt::Dbo::ptr<stock> st_3 = session.add(std::move(stock_3));
+		Wt::Dbo::ptr<stock> st_4 = session.add(std::move(stock_4));
+		Wt::Dbo::ptr<stock> st_5 = session.add(std::move(stock_5));
+		Wt::Dbo::ptr<stock> st_6 = session.add(std::move(stock_6));
+		Wt::Dbo::ptr<stock> st_7 = session.add(std::move(stock_7));
 
-		//b_4.modify()->stock.insert(st_);
-		//b_3.modify()->stock.insert(st_1);
-		//b_2.modify()->stock.insert(st_2);
-		//b_1.modify()->stock.insert(st_3);
-		//b_.modify()->stock.insert(st_4);
-		//b_4.modify()->stock.insert(st_5);
-		//b_4.modify()->stock.insert(st_6);
-		//b_1.modify()->stock.insert(st_7);
+		b_4.modify()->stock.insert(st_);
+		b_3.modify()->stock.insert(st_1);
+		b_2.modify()->stock.insert(st_2);
+		b_1.modify()->stock.insert(st_3);
+		b_.modify()->stock.insert(st_4);
+		b_4.modify()->stock.insert(st_5);
+		b_4.modify()->stock.insert(st_6);
+		b_1.modify()->stock.insert(st_7);
 
-		//s_1.modify()->stock.insert(st_);
-		//s_2.modify()->stock.insert(st_1);
-		//s_.modify()->stock.insert(st_2);
-		//s_2.modify()->stock.insert(st_3);
-		//s_2.modify()->stock.insert(st_4);
-		//s_2.modify()->stock.insert(st_5);
-		//s_3.modify()->stock.insert(st_6);
-		//s_1.modify()->stock.insert(st_7);
+		s_1.modify()->stock.insert(st_);
+		s_2.modify()->stock.insert(st_1);
+		s_.modify()->stock.insert(st_2);
+		s_2.modify()->stock.insert(st_3);
+		s_2.modify()->stock.insert(st_4);
+		s_2.modify()->stock.insert(st_5);
+		s_.modify()->stock.insert(st_6);
+		s_1.modify()->stock.insert(st_7);
 
-		//std::unique_ptr<sale> sale_{ new sale };
-		//std::unique_ptr<sale> sale_1{ new sale };
-		//std::unique_ptr<sale> sale_2{ new sale };
-		//std::unique_ptr<sale> sale_3{ new sale };
-		//std::unique_ptr<sale> sale_4{ new sale };
-		//sale_->count = 1;
-		//sale_1->count = 2;
-		//sale_2->count = 1;
-		//sale_3->count = 4;
-		//sale_4->count = 2;
-		//sale_->price = 550;
-		//sale_1->price = 950;
-		//sale_2->price = 200;
-		//sale_3->price = 350;
-		//sale_4->price = 450;
-		//sale_->date_sale = 5;				// как вставить дату
-		//sale_1->date_sale = 55;
-		//sale_2->date_sale = 10;
-		//sale_3->date_sale = 4;
-		//sale_4->date_sale = 1;
+		std::unique_ptr<sale> sale_{ new sale };
+		std::unique_ptr<sale> sale_1{ new sale };
+		std::unique_ptr<sale> sale_2{ new sale };
+		std::unique_ptr<sale> sale_3{ new sale };
+		std::unique_ptr<sale> sale_4{ new sale };
+		sale_->count = 1;
+		sale_1->count = 2;
+		sale_2->count = 1;
+		sale_3->count = 4;
+		sale_4->count = 2;
+		sale_->price = 550;
+		sale_1->price = 950;
+		sale_2->price = 200;
+		sale_3->price = 350;
+		sale_4->price = 450;
+		sale_->date_sale = Wt::WDateTime::fromString(Wt::WString("2011-12-05 00:00:00"), Wt::WString("yyyy-MM-dd HH:mm:ss"));		// как вставить дату
+		sale_1->date_sale = Wt::WDateTime::fromString(Wt::WString("2013-08-06 00:00:00"), Wt::WString("yyyy-MM-dd HH:mm:ss"));
+		sale_2->date_sale = Wt::WDateTime::fromString(Wt::WString("2022-06-13 00:00:00"), Wt::WString("yyyy-MM-dd HH:mm:ss"));
+		sale_3->date_sale = Wt::WDateTime::fromString(Wt::WString("2008-11-23 00:00:00"), Wt::WString("yyyy-MM-dd HH:mm:ss"));
+		sale_4->date_sale = Wt::WDateTime::fromString(Wt::WString("2012-01-28 00:00:00"), Wt::WString("yyyy-MM-dd HH:mm:ss"));
 
-		//Wt::Dbo::ptr<sale> sa_ = session.add(std::move(sale_));
-		//Wt::Dbo::ptr<sale> sa_1 = session.add(std::move(sale_1));
-		//Wt::Dbo::ptr<sale> sa_2 = session.add(std::move(sale_2));
-		//Wt::Dbo::ptr<sale> sa_3 = session.add(std::move(sale_3));
-		//Wt::Dbo::ptr<sale> sa_4 = session.add(std::move(sale_4));
+		Wt::Dbo::ptr<sale> sa_ = session.add(std::move(sale_));
+		Wt::Dbo::ptr<sale> sa_1 = session.add(std::move(sale_1));
+		Wt::Dbo::ptr<sale> sa_2 = session.add(std::move(sale_2));
+		Wt::Dbo::ptr<sale> sa_3 = session.add(std::move(sale_3));
+		Wt::Dbo::ptr<sale> sa_4 = session.add(std::move(sale_4));
 
-		//st_.modify()->sale.insert(sa_);
-		//st_3.modify()->sale.insert(sa_1);
-		//st_6.modify()->sale.insert(sa_2);
-		//st_4.modify()->sale.insert(sa_3);
-		//st_3.modify()->sale.insert(sa_4);
+		st_.modify()->sale.insert(sa_);
+		st_3.modify()->sale.insert(sa_1);
+		st_6.modify()->sale.insert(sa_2);
+		st_4.modify()->sale.insert(sa_3);
+		st_3.modify()->sale.insert(sa_4);
 
 		std::string name = "";
 		std::cin >> name;
