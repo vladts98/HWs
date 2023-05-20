@@ -18,7 +18,7 @@
     <ClCompile Include="Final.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="ini_parser.cpp">
+    <ClCompile Include="Ini_parser.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

@@ -128,7 +128,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Final.cpp" />
-    <ClCompile Include="ini_parser.cpp" />
+    <ClCompile Include="Ini_parser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ini_parser.h" />

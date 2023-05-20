@@ -1,80 +1,81 @@
-#include "ini_parser.h"
+#include "Ini_parser.h"
 
-
-ini_parser::ini_parser(std::string file_name)
+Ini_parser::Ini_parser(std::string file_name)
 {
-	try {
-		fin.open(file_name);
-		if (!fin.is_open()) {
-			throw std::invalid_argument("File is not open.\n");
-		}
-	}
-	catch (const std::invalid_argument e) {
-		std::cout << e.what();
-	}
+	fin.open(file_name);
+	if (!fin.is_open())
+		std::cout << "File is not open.\n";
+	else
+		read();
 }
 
-ini_parser::~ini_parser()
+Ini_parser::~Ini_parser()
 {
-	if (fin.is_open()) {
+	if (fin.is_open())
 		fin.close();
-	}
 }
 
-std::stack<std::string> ini_parser::find_values(std::string section_value)
+void Ini_parser::print_sactions()
 {
-	auto dot = section_value.find('.');
-	std::string section_name = section_value.substr(0, dot);
-	std::string value_name = section_value.substr(dot + 1, section_value.size());
-	std::set<std::string> available_values; //будущий список переменных
+	std::cout << "Availible sactions: ";
+	for (auto element : this->values)
+		std::cout << element.first << ", ";
+}
 
-	auto delete_comment_spaces = [](std::string& s) { // удаляю коментарий и пробелы в строке если он есть
+void Ini_parser::print_values(std::string saction)
+{
+	if (this->values.count(saction)) {
+		std::cout << "Availible values in \"" << saction << "\": ";
+		for (const auto& element : this->values[saction])
+			std::cout << element.first << ", ";
+	}
+	else
+		std::cout << "Saction is not exist";
+}
+
+void Ini_parser::read()
+{
+	auto delete_comment_spaces = [](std::string& s) {
 		auto com = s.find(';');
-		if (com != std::string::npos) { //удаляем коментарий при наличии
+		if (com != std::string::npos) {
 			s.erase(com);
 		}
 
-		auto start = false; //флаг, что нашли начало
+		auto start = false;
 		auto iter = s.cbegin();
 		while (iter != s.cend()) {
-			if (std::iswspace(*iter)) { // удаляем пробелы вначале
+			if (std::iswspace(*iter)) {
 				s.erase(iter);
 				iter = s.cbegin();
 				continue;
 			}
-			else {
+			else
 				break;
-			}
 			++iter;
 		}
 		iter = s.cend();
-		while (iter != s.cbegin()) { //удаляем пробелы в конце
-			if (!std::iswspace(*(iter - 1))) {
+		while (iter != s.cbegin()) {
+			if (!std::iswspace(*(iter - 1)))
 				break;
-			}
 			--iter;
 		}
 		s.erase(iter, s.end());
 	};
 
-	std::stack <std::string> values; // будущие значение если найдем
-	bool value_finded = false; // флаг нашли ли мы значения или нет
-	bool open = false; // флаг, находимся в секции или нет
-	std::string s; //строка из файла
+	std::string s = "";
+	std::string saction_name = "";
 
 	unsigned int line = 0;
 	while (std::getline(fin, s)) {
 		line++;
-		if (!s.size()) {
+		delete_comment_spaces(s);
+		if (!s.size())
 			continue;
-		}
+
 		if (s.at(0) == '[') {
-			auto a = s.find(']'); // находим конец названия секции
-			if (a != std::string::npos) { // если найдена 
-				open = false;
-				if (section_name == s.substr(1, a - 1)) { // если имя совпадает то мы находимся внутри нужной секции
-					open = true;
-				}
+			auto a = s.find(']');
+			if (a != std::string::npos) {
+				saction_name = s.substr(1, a - 1);
 			}
 			else {
 				std::cout << "wrong file structure, line: " << line;
@@ -83,58 +84,38 @@ std::stack<std::string> ini_parser::find_values(std::string section_value)
 			continue;
 		}
 		else {
-			if (open) {
-				delete_comment_spaces(s);
-				if (s.size() == 0) { //пуста строка
-					continue;
-				}
-
-				auto eq = s.find('=');
-				if (eq == std::string::npos) {
-					std::cout << "wrong file structure, line: " << line;
-					throw std::invalid_argument("wrong file structure"); // не найдено знака равно, но есть какой то текст, и это не коментарий и пробелы
-					continue;
-				}
-
-				std::string current_value_name = s.substr(0, eq);
-				delete_comment_spaces(current_value_name);
-				available_values.insert(current_value_name);
-
-				if (current_value_name == value_name) {
-					value_finded = true;
-					std::string current_value = s.substr(eq + 1, s.size());
-					delete_comment_spaces(current_value);
-					values.push(current_value);
-				}
+			if (saction_name == "")
+				continue;
+			auto eq = s.find('=');
+			if (eq == std::string::npos) {
+				std::cout << "wrong file structure, line: " << line;
+				throw std::invalid_argument("wrong file structure");
 			}
+			std::string current_value_name = s.substr(0, eq);
+			delete_comment_spaces(current_value_name);
+			std::string current_value = s.substr(eq + 1, s.size());
+			delete_comment_spaces(current_value);
+			this->values[saction_name][current_value_name].push_back(current_value);
 		}
 	}
-	if (!value_finded) {
-		std::cout << "available values in " << section_name << ": ";
-		for (auto a_v : available_values) {
-			std::cout << a_v << ", ";
-		}
-		throw std::invalid_argument("wrong name_value / value not found");
-	}
-	return values;
 }
 
-void ini_parser::convert(int& value, std::string& s)
+void Ini_parser::convert(int& value, std::string& s)
 {
 	value = std::stoi(s);
 }
 
-void ini_parser::convert(float& value, std::string& s)
+void Ini_parser::convert(float& value, std::string& s)
 {
 	value = std::stof(s);
 }
 
-void ini_parser::convert(double& value, std::string& s)
+void Ini_parser::convert(double& value, std::string& s)
 {
 	value = std::stod(s);
 }
 
-void ini_parser::convert(std::string& value, std::string& s)
+void Ini_parser::convert(std::string& value, std::string& s)
 {
 	value = s;
 }

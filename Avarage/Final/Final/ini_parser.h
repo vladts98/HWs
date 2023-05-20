@@ -4,35 +4,41 @@
 #include <string>
 #include <set>
 #include <cwctype>
-#include <stack>
+#include <unordered_map>
+#include <list>
 
-class ini_parser
-{
+class Ini_parser {
 public:
-	ini_parser(std::string file_name);
-	~ini_parser();
+	Ini_parser(std::string file_name);
+	~Ini_parser();
 
 	template<typename T>
-	T get_value(std::string section_value) {
-		auto stack = std::move(find_values(section_value));
-		if (stack.empty()) {
-			throw std::invalid_argument("empty values");
-		}
+	T get_value(std::string saction_value) {
+		if (this->values.empty())
+			throw std::invalid_argument("Empty file/values");
+
+		std::string saction = saction_value.substr(0, saction_value.find('.'));
+		std::string name = saction_value.substr(saction_value.find('.') + 1, saction_value.size());
+
+		if (!this->values.count(saction))
+			print_sactions();
+
+		if (!this->values[saction].count(name))
+			print_values(saction);
+
 		T value;
-		convert(value, stack.top());
+		convert(value, this->values[saction][name].back());
 		return value;
 	}
-
-	std::stack<std::string> find_values(std::string section_value);
+	void print_sactions();
+	void print_values(std::string saction);
 
 private:
 	std::ifstream fin;
-
+	std::unordered_map<std::string, std::unordered_map<std::string, std::list<std::string> > > values;
+	void read();
 	void convert(int& value, std::string& s);
 	void convert(float& value, std::string& s);
 	void convert(double& value, std::string& s);
 	void convert(std::string& value, std::string& s);
-
-	//template<>							
-	//int convert<int>(std::string& s); нельзя же содавать такие функции?
 };
