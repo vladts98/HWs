@@ -126,7 +126,7 @@ private:
 
 int main()
 {
-	//auto a_ = UnkownError(nullptr);
+	//auto a_ = WarningHandler(nullptr);
 	auto a = std::make_unique<WarningHandler>(nullptr);
 	auto b = std::make_unique<ErrorHandler>(std::move(a));
 	auto c = std::make_unique<FatalErrorHandler>(std::move(b));
