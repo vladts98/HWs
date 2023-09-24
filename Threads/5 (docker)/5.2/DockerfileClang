@@ -1,0 +1,7 @@
+FROM ubuntu:16.04
+	LABEL maintainer = "vvv"
+	RUN apt-get update && apt-get install -y clang
+	WORKDIR /root/test/
+	COPY aaa.cpp .
+	RUN clang --std=c++1z -lstdc++ aaa.cpp -o comp
+	CMD ["./comp"]
