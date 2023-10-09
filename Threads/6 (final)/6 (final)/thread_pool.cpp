@@ -23,11 +23,11 @@ thread_pool::~thread_pool()
 
 bool thread_pool::work()
 {
-	while (!stop && q.size()) {
+	while (q.size() || !stop) {
 		if (q.size())
 			q.pop();
 		else
-			std::this_thread::yield;
+			std::this_thread::yield();
 	}
 	return true;
 }

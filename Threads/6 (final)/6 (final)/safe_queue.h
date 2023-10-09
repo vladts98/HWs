@@ -15,21 +15,27 @@ private:
 	std::queue<T> queue;
 	std::mutex mtx;
 	std::condition_variable cv;
+	bool start = false;
 };
 
 template<typename T>
 void safe_queue<T>::push(T f) {
 	std::unique_lock<std::mutex> ul(mtx);
 	queue.push(f);
-	cv.notify_all();
+	start = true;
+	cv.notify_one();
 }
 
 template<typename T>
-void safe_queue<T>::pop() {
+void safe_queue<T>::pop() 
+{
 	std::unique_lock<std::mutex> ul(mtx);
-	cv.wait(ul);
+	cv.wait(ul, [&] {return start; } );
 	if (queue.size() > 0) {
+		auto func = queue.front();
 		queue.pop();
+		ul.unlock();
+		func();
 	}
 }
 

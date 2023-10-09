@@ -13,21 +13,24 @@ std::mutex mutex;
 void ff() {
 	std::this_thread::sleep_for(std::chrono::seconds(1));
 	std::unique_lock<std::mutex> ul(mutex);
-	std::cout << __FUNCTION__ << n++ << " " << '\n';
+	std::cout << __FUNCTION__ << ++n << '\n';
 }
 
 void f() {
 	std::this_thread::sleep_for(std::chrono::seconds(2));
 	std::unique_lock<std::mutex> ul(mutex);
-	std::cout << __FUNCTION__ << n++ << " " << '\n';
+	std::cout << __FUNCTION__ << ++n << '\n';
 }
 
 int main() {
-	std::cout << "check";
-	thread_pool tp(4);
-	for (int i = 0; i < 2; ++i) {
+	std::cout << "check\n";
+	thread_pool tp;
+
+	for (int i = 0; i < 6; ++i) {
 		tp.submit(ff);
 		tp.submit(f);
 	}
+	tp.~thread_pool();
+	std::cout << n;
 	return 0;
 }
