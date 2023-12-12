@@ -19,10 +19,6 @@ void StopWatch::Start()
     isStarted = true;
     qTimer->start();
 }
-void StopWatch::UpdateTime()
-{
-    Time += float(qTimer->interval())/1000;
-}
 void StopWatch::Stop()
 {
     isStarted = false;
@@ -57,7 +53,12 @@ int StopWatch::getNumLap()
 }
 float StopWatch::getTime()
 {
+    if(isStarted)
+        Time += float(qTimer->interval())/1000;
     return Time;
 }
-
+QTimer* StopWatch::getQTimer()
+{
+    return qTimer;
+}
 

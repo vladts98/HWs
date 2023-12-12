@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(sw, &StopWatch::sig_Clear, this, &MainWindow::RcvSignalClear);
     connect(sw, &StopWatch::sig_Lap, this, &MainWindow::RcvSignalLap);
-    connect(sw->qTimer, &QTimer::timeout, this, &MainWindow::RcvSignalTime);
+    connect(sw->getQTimer(), &QTimer::timeout, this, &MainWindow::RcvSignalTime);
 }
 
 MainWindow::~MainWindow()
@@ -63,8 +63,6 @@ void MainWindow::RcvSignalLap()
 void MainWindow::RcvSignalTime()
 {
     if(sw->isStart())
-    {
         ui->label_Time->setText(QString::number(sw->getTime()) + " сек");
-        sw->UpdateTime();
-    }
+
 }

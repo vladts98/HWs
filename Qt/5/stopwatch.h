@@ -12,7 +12,6 @@ public:
     ~StopWatch();
 
     void Start();
-    void UpdateTime();
     void Stop();
     void Clear();
     void Lap();
@@ -21,16 +20,16 @@ public:
     float getLapTime();
     int getNumLap();
     float getTime();
-    QTimer* qTimer;
+    QTimer* getQTimer();
 signals:
     void sig_Clear();
     void sig_Lap();
 private:
-    QTimer* getQTimer();
     bool isStarted;
     float Time;
     float LapStartTime;
     int NumLap;
+    QTimer* qTimer;
 
 };
 
