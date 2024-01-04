@@ -105,28 +105,24 @@ void MainWindow::on_pb_request_clicked()
     ///Тут должен быть код ДЗ
     QString category = ui->cb_category->currentText();
     if (category == "Комедия")
-    {
         request = "SELECT title, description "
         			"FROM film f "
         			"JOIN film_category fc on f.film_id = fc.film_id "
         			"JOIN category c on c.category_id = fc.category_id "
         			"WHERE c.name = 'Comedy' ";
-    }
     else if (category == "Ужасы")
-    {
         request = "SELECT title, description "
         			"FROM film f "
         			"JOIN film_category fc on f.film_id = fc.film_id "
         			"JOIN category c on c.category_id = fc.category_id "
         			"WHERE c.name = 'Horror' ";
-    }
     else
-        request = "*";
-
+        request = "SELECT title, release_year "
+                  "FROM film f "
+                  "JOIN film_category fc on f.film_id = fc.film_id "
+                  "JOIN category c on c.category_id  = fc.category_id";
     auto req = [&]{dataBase->RequestToDB(request);};
     QtConcurrent::run(req);
-
-
 }
 
 /*!

@@ -68,7 +68,6 @@ void DataBase::DisconnectFromDataBase(QString nameDb)
  */
 void DataBase::RequestToDB(QString request)
 {
-
     ///Тут должен быть код ДЗ
     if(request == "*")
     {
