@@ -117,7 +117,7 @@ void MainWindow::on_pb_request_clicked()
         			"JOIN category c on c.category_id = fc.category_id "
         			"WHERE c.name = 'Horror' ";
     else
-        request = "SELECT title, release_year "
+        request = "SELECT title, description "
                   "FROM film f "
                   "JOIN film_category fc on f.film_id = fc.film_id "
                   "JOIN category c on c.category_id  = fc.category_id";
