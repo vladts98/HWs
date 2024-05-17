@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "UE_4_move_function",
+			"Path": "..\\Source\\UE_4_move_function.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "UE_4_move_functionEditor",
+			"Path": "..\\Source\\UE_4_move_functionEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}
